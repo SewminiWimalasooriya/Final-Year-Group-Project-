@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js"; 
+import User from "./models/User.js";
+import authRoutes from "./routes/authRoutes.js";
+import apartmentRequestRoutes from "./routes/apartmentRequestRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +22,11 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("API running...");
 });
+
+//routes
+app.use('/api/auth',authRoutes);
+app.use('/api/apartment', apartmentRequestRoutes);
+
 
 
 // start server
