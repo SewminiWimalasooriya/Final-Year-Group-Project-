@@ -1,5 +1,8 @@
 import ApartmentRequest from "../models/ApartmentRequest.js";
 import Apartment from "../models/Apartment.js";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import User from "../models/User.js";
 
 export const createApartmentRequest = async (req, res) => {
     try {
@@ -75,6 +78,27 @@ export const approveRequest = async (req, res) => {
             email: request.email,
             phone: request.phone,
         });
+
+        // 2️⃣ generate temp password
+        const tempPassword = crypto.randomBytes(4).toString("hex");
+
+        // 3️⃣ hash password
+        const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+        // 4️⃣ create OWNER account
+        const owner = await User.create({
+            username: request.ownerName,
+            email: request.email,
+            password: hashedPassword,
+            role: "owner",
+            apartment: apartment._id,
+            mustChangePassword: true
+        });
+
+        // 5️⃣ TODO: send email (you can plug nodemailer here)
+        console.log("Owner Login Details:");
+        console.log("Email:", owner.email);
+        console.log("Password:", tempPassword);
 
         request.status = "APPROVED";
         await request.save();

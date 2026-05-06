@@ -10,16 +10,22 @@ const userschema = new mongoose.Schema({
         type: String,
         required: true
     },
-    role: String,
-    isApproved: {
+    role: {
+        type: String,
+        enum: ["admin", "owner", "user"],
+        default: "user"
+    },
+    mustChangePassword: {
         type: Boolean,
         default: false
     },
-    apartment : {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Apartment",
-  },
 
-})
+
+    apartment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Apartment",
+    },
+
+},{ timestamps: true });
 
 export default mongoose.model("User", userschema);
