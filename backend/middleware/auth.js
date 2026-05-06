@@ -1,19 +1,24 @@
+// middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-export const authMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+// Middleware to protect routes and ensure the user is authenticated
+export const protect = async (req, res, next) => {
+    let token;
 
-  if (!token) {
-    return res.status(401).json({ message: "No token, not authorized" });
-  }
+    if (req.headers.authorization?.startsWith("Bearer")) {
+        try {
+            token = req.headers.authorization.split(" ")[1];
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = decoded; // 👈 user info attach කරනවා
+            req.user = await User.findById(decoded.id).select("-password");
 
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
+            return next();
+        } catch (err) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+    }
+
+    return res.status(401).json({ message: "No token provided" });
 };

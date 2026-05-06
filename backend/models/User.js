@@ -15,7 +15,7 @@ const userschema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    apartmentName : {
+    apartment : {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Apartment",
   },

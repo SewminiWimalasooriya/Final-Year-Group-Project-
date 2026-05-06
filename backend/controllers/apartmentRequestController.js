@@ -58,12 +58,13 @@ export const approveRequest = async (req, res) => {
 
         const request = await ApartmentRequest.findById(requestId);
 
-        if (request.status !== "PENDING") {
-            return res.status(400).json({ message: "Already processed" });
-        }
-
+    
         if (!request) {
             return res.status(404).json({ message: "Not found" });
+        }
+
+        if (request.status !== "PENDING") {
+            return res.status(400).json({ message: "Already processed" });
         }
 
         //create apartment 

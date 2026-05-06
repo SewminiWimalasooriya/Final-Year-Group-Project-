@@ -1,14 +1,25 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { generateToken } from "../utils/generateToken.js"
 import User from "../models/User.js";
+import Apartment from "../models/Apartment.js";
 
 //register user 
 export const registerUser = async (req, res) => {
     try {
-        const { username, email, password, role, apartmentName } = req.body;
+        //apartmentId send from frontend when user select apartment name 
+        
+        const { username, email, password, role, apartment } = req.body;
 
-        if (!username || !email || !password || !apartmentName) {
+        if (!username || !email || !password || !apartment) {
             return res.status(400).json({ success: false, message: 'Please provide name, email, password and apartment name' });
+        }
+
+        const apartmentName = await Apartment.findOne({_id: apartment });
+
+        if (!apartmentName) {
+            return res.status(400).json({
+                message: "Apartment not approved yet"
+            });
         }
 
         //check if user exists
@@ -30,7 +41,7 @@ export const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             role: userRole,
-            apartmentName
+            apartment: apartmentName._id
 
         });
 
@@ -42,9 +53,53 @@ export const registerUser = async (req, res) => {
     }
 };
 
-// //Login User
-// export const LoginUser = async (req, res) => {
-//     try{
+//Login User
+export const loginUser = async (req, res) => {
+    try{
+       const {email, password} = req.body;
 
-//     }
-// }
+       if (!email || !password){
+        return res.status(400).json({
+            message:"Please provide email and password"
+        });
+       }
+       //find  user 
+       const user = await User.findOne({email}).populate("apartment");
+
+       if (!user){
+        return res.status(400).json({
+            message:"Invaid email or passsword"
+
+        });
+       }
+
+       //check password
+       const isMatch = await bcrypt.compare(password, user.password);
+
+       if (!isMatch){
+        return res.status(400).json({
+            message:"invaild password"
+        });
+       }
+
+       //generate token
+       const token = generateToken(user._id);
+
+       //response
+       res.status(200).json({
+        message:"Login successful",
+        token,
+        user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                apartment: user.apartment
+            }
+       });
+
+
+    }catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
