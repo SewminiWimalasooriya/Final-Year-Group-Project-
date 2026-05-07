@@ -49,19 +49,19 @@ export const adminLogin = async (req, res) => {
       const { email, password } = req.body;
 
       // find admin
-      const admin = await User.findOne({
+      const user = await User.findOne({
          email,
          role: "admin"
       });
 
-      if (!admin) {
+      if (!user) {
          return res.status(404).json({
             message: "Admin not found"
          });
       }
 
       // compare password
-      const isMatch = await bcrypt.compare(password, admin.password);
+      const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
          return res.status(400).json({
@@ -70,12 +70,18 @@ export const adminLogin = async (req, res) => {
       }
 
       // generate token
-      const token = generateToken(admin._id);
+      const token = generateToken(user._id);
 
       res.status(200).json({
          message: "Login successful",
          token,
-         role: admin.role
+         user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                apartment: user.apartment
+            }
       });
 
    } catch (err) {
