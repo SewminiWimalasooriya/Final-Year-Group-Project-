@@ -3,6 +3,7 @@ import { createApartmentRequest, getPendingRequest, approveRequest, rejectReques
 import {protect} from "../middleware/auth.js";
 import {adminOnly} from "../middleware/adminMiddleware.js";
 import {validateApartmentRequest} from "../middleware/validateApartment.js"
+import { getApprovedApartments } from "../controllers/apartmentController.js";
 
 const router = express.Router();
 
@@ -17,4 +18,6 @@ router.put("/approve/:id", approveRequest);  //protect, adminOnly,
 //admin panel reject button
 router.put("/reject/:id",rejectRequest); //protect, adminOnly,
 
+//get all approved apartment 
+router.get("/",getApprovedApartments)
 export default router;

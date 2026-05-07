@@ -43,7 +43,7 @@ export const registerUser = async (req, res) => {
 
 
         await user.save();
-        console.log("User saved:", user);
+       
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -53,11 +53,13 @@ export const registerUser = async (req, res) => {
 //Login User
 export const loginUser = async (req, res) => {
     try {
+        //apartmentId send from frontend when user select apartment name 
         const { email, password, apartment } = req.body;
+        console.log("user details",email,password,apartment)
 
-        if (!email || !password) {
+        if (!email || !password|| !apartment) {
             return res.status(400).json({
-                message: "Please provide email and password"
+                message: "Please provide email,apartment and password"
             });
         }
         //find  user 
@@ -67,6 +69,15 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({
                 message: "Invaid email or passsword"
 
+            });
+        }
+        
+        //check apartment
+        const isMatchApartment = user.apartment._id.toHexString() === apartment;
+
+        if(!isMatchApartment){
+            return res.status(400).json({
+                message: "Invalid apartment"
             });
         }
 
@@ -98,13 +109,7 @@ export const loginUser = async (req, res) => {
             message: "Login successful",
             token,
             mustChangePassword: user.mustChangePassword,
-            user: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                role: user.role,
-                apartment: user.apartment
-            }
+            
         });
 
 
