@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import User from "./models/User.js";
 import authRoutes from "./routes/authRoutes.js";
 import apartmentRequestRoutes from "./routes/apartmentRequestRoutes.js";
+import adminAuthRoutes from './routes/adminAuthRoutes.js';
 
 dotenv.config();
 
@@ -27,6 +28,8 @@ app.get("/", (req, res) => {
 app.use('/api/auth',authRoutes);
 app.use('/api/apartment', apartmentRequestRoutes);
 
+//admin routes
+app.use('/api/auth/admin',adminAuthRoutes);
 
 
 // start server

@@ -93,18 +93,7 @@ export const loginUser = async (req, res) => {
         //generate token
         const token = generateToken(user._id);
 
-        //response
-        //    res.status(200).json({
-        //     message:"Login successful",
-        //     token,
-        //     user: {
-        //             id: user._id,
-        //             username: user.username,
-        //             email: user.email,
-        //             role: user.role,
-        //             apartment: user.apartment
-        //         }
-        //    });
+        
         res.status(200).json({
             message: "Login successful",
             token,

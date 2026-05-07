@@ -24,6 +24,9 @@ const userschema = new mongoose.Schema({
     apartment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Apartment",
+        required: function () {
+        return this.role !== "admin";
+    }
     },
 
 },{ timestamps: true });
