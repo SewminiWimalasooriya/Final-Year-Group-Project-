@@ -5,6 +5,11 @@ const apartmentSchema = new mongoose.Schema({
   address: String,
   ownerName: String,
   email: String,
-});
+  status: {
+    type: String,
+    enum: ["approved", "blocked"],
+    default: "approved"
+  }
+},{ timestamps: true });
 
 export default mongoose.model("Apartment", apartmentSchema);
