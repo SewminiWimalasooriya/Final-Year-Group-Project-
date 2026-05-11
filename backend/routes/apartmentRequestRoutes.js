@@ -3,7 +3,7 @@ import { createApartmentRequest, getPendingRequest, approveRequest, rejectReques
 import {protect} from "../middleware/auth.js";
 import {adminOnly} from "../middleware/adminMiddleware.js";
 import {validateApartmentRequest} from "../middleware/validateApartment.js"
-import { getApprovedApartments, blockaprtment } from "../controllers/apartmentController.js";
+import { getApprovedApartments, blockaprtment, blockList,unBlockedApartment } from "../controllers/apartmentController.js";
 
 const router = express.Router();
 
@@ -19,6 +19,10 @@ router.put("/approve/:id", approveRequest);  //protect, adminOnly,
 router.put("/reject/:id",rejectRequest); //protect, adminOnly,
 //blocked aprtment
 router.put("/blocked/:id",blockaprtment)
+//get all blocked apartment
+router.get('/blockedApartments',blockList)
+//unblocked apartment
+router.put("/unblocked/:id",unBlockedApartment)
 
 //get all approved apartment 
 router.get("/",getApprovedApartments)
