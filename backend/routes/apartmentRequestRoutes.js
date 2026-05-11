@@ -13,17 +13,17 @@ router.post("/create",upload.single("image"),validateApartmentRequest, createApa
 
 
 //admin panel
-router.get("/pending", getPendingRequest );  //protect, adminOnly,
+router.get("/pending",protect, adminOnly, getPendingRequest );  
 //admin panel approve button
-router.put("/approve/:id", approveRequest);  //protect, adminOnly,
+router.put("/approve/:id",protect, adminOnly, approveRequest);  //protect, adminOnly,
 //admin panel reject button
-router.put("/reject/:id",rejectRequest); //protect, adminOnly,
+router.put("/reject/:id",protect, adminOnly, rejectRequest); //protect, adminOnly,
 //blocked aprtment
-router.put("/blocked/:id",blockaprtment)
+router.put("/blocked/:id",protect, adminOnly,blockaprtment)
 //get all blocked apartment
-router.get('/blockedApartments',blockList)
+router.get('/blockedApartments',protect, adminOnly,blockList)
 //unblocked apartment
-router.put("/unblocked/:id",unBlockedApartment)
+router.put("/unblocked/:id",protect, adminOnly,unBlockedApartment)
 
 //get all approved apartment 
 router.get("/",getApprovedApartments)

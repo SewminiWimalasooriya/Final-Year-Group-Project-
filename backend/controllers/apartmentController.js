@@ -2,7 +2,10 @@ import Apartment from "../models/Apartment.js";
 
 export const getApprovedApartments = async( req , res) =>{
     try{
-        const apartments = await Apartment.find();
+        const apartments = await Apartment.find({status:"approved"});
+        if(apartments.length === 0){
+            return res.status(404).json({message: "No registered apartments found"})
+        }
         res.status(200).json(apartments);
     }catch (err) {
         res.status(500).json({

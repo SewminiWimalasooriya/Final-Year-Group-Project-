@@ -87,6 +87,7 @@ export const approveRequest = async (req, res) => {
             email: request.email,
             phone: request.phone,
             image:request.image,
+            status:"approved"
         });
 
         // 2️⃣ generate temp password
