@@ -12,6 +12,9 @@ const apartmentRequestSchema = new mongoose.Schema({
     enum: ["PENDING", "APPROVED", "REJECTED"],
     default: "PENDING",
   },
+  image: {
+        type: String
+    },
 
   createdAt: {
     type: Date,

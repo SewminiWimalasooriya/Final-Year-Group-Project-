@@ -5,6 +5,9 @@ const apartmentSchema = new mongoose.Schema({
   address: String,
   ownerName: String,
   email: String,
+  image: {
+        type: String
+    },
   status: {
     type: String,
     enum: ["approved", "blocked"],

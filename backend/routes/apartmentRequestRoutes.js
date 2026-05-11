@@ -4,11 +4,12 @@ import {protect} from "../middleware/auth.js";
 import {adminOnly} from "../middleware/adminMiddleware.js";
 import {validateApartmentRequest} from "../middleware/validateApartment.js"
 import { getApprovedApartments, blockaprtment, blockList,unBlockedApartment } from "../controllers/apartmentController.js";
+import upload from "../middleware/uploadMiddleware.js"
 
 const router = express.Router();
 
 //create apratment request
-router.post("/create",validateApartmentRequest, createApartmentRequest);
+router.post("/create",upload.single("image"),validateApartmentRequest, createApartmentRequest);
 
 
 //admin panel
@@ -26,5 +27,7 @@ router.put("/unblocked/:id",unBlockedApartment)
 
 //get all approved apartment 
 router.get("/",getApprovedApartments)
+
+
 
 export default router;

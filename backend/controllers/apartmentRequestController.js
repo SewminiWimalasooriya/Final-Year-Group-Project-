@@ -8,12 +8,18 @@ export const createApartmentRequest = async (req, res) => {
     try {
         const { name, email } = req.body;
 
+         // uploaded image
+        const image = req.file
+            ? req.file.path
+            : null;
+
         // 1. Check existing pending request
         const existingRequest = await ApartmentRequest.findOne({
             name,
             email,
             status: "PENDING",
         });
+        
 
         if (existingRequest) {
             return res.status(400).json({
@@ -31,7 +37,10 @@ export const createApartmentRequest = async (req, res) => {
         }
 
         // 3. Create new request
-        const request = await ApartmentRequest.create(req.body);
+        const request = await ApartmentRequest.create({
+            ...req.body,
+            image
+        });
 
         res.status(201).json({
             message: "Request sent for approval",
@@ -77,6 +86,7 @@ export const approveRequest = async (req, res) => {
             ownerName: request.ownerName,
             email: request.email,
             phone: request.phone,
+            image:request.image,
         });
 
         // 2️⃣ generate temp password
