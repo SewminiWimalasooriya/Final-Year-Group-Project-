@@ -3,15 +3,11 @@ import Apartment from "../models/Apartment.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import User from "../models/User.js";
+import fs from "fs";
 
 export const createApartmentRequest = async (req, res) => {
     try {
         const { name, email } = req.body;
-
-         // uploaded image
-        const image = req.file
-            ? req.file.path
-            : null;
 
         // 1. Check existing pending request
         const existingRequest = await ApartmentRequest.findOne({
@@ -19,16 +15,26 @@ export const createApartmentRequest = async (req, res) => {
             email,
             status: "PENDING",
         });
-        
 
         if (existingRequest) {
+
+            // delete uploaded image
+            if (req.file) {
+                fs.unlinkSync(req.file.path);
+            }
+
             return res.status(400).json({
                 message: "Request already pending for this apartment",
             });
         }
 
+
+
         // 2. Check already approved apartment
-        const existingApartment = await Apartment.findOne({ name, email });
+        const existingApartment = await Apartment.findOne({
+            name,
+            email,
+        });
 
         if (existingApartment) {
             return res.status(400).json({
@@ -36,10 +42,16 @@ export const createApartmentRequest = async (req, res) => {
             });
         }
 
-        // 3. Create new request
+
+        // 3. Upload image
+        const image = req.file
+            ? req.file.path
+            : null;
+
+        // 4. Create request
         const request = await ApartmentRequest.create({
             ...req.body,
-            image
+            image,
         });
 
         res.status(201).json({
@@ -48,9 +60,11 @@ export const createApartmentRequest = async (req, res) => {
         });
 
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({
+            error: err.message,
+        });
     }
-}
+};
 
 //Get all apartment request ( for admin panel show )
 export const getPendingRequest = async (req, res) => {
@@ -70,7 +84,7 @@ export const approveRequest = async (req, res) => {
 
         const request = await ApartmentRequest.findById(requestId);
 
-    
+
         if (!request) {
             return res.status(404).json({ message: "Not found" });
         }
@@ -86,8 +100,8 @@ export const approveRequest = async (req, res) => {
             ownerName: request.ownerName,
             email: request.email,
             phone: request.phone,
-            image:request.image,
-            status:"approved"
+            image: request.image,
+            status: "approved"
         });
 
         // 2️⃣ generate temp password
