@@ -62,27 +62,49 @@ const FirstInterface = () => {
             const data = await response.json();
 
             alert(data.message);
-            if(response.ok){
+            if (response.ok) {
                 setFormData({
-                apartmentName: "",
-                ownerName: "",
-                email: "",
-                address: "",
-                phoneNo: "",
-            })
-            setImage(null);
-            if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-            }
+                    apartmentName: "",
+                    ownerName: "",
+                    email: "",
+                    address: "",
+                    phoneNo: "",
+                })
+                setImage(null);
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
 
             }
-            
+
 
         } catch (error) {
 
             alert("Error sending request:" + error.message);
 
         }
+    };
+
+    //when close model reset feild
+    const resetForm = () => {
+        setFormData({
+            apartmentName: "",
+            ownerName: "",
+            email: "",
+            address: "",
+            phoneNo: "",
+        });
+
+        setImage(null);
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+    //for closeform 
+    const handleCloseModal = () => {
+        setOpenModal(false);
+        resetForm();
     };
 
     return (
@@ -146,8 +168,8 @@ const FirstInterface = () => {
 
                         {/* Close Button */}
                         <button
-                            onClick={() => setOpenModal(false)}
-                            className="absolute top-3 right-3 text-gray-600 text-xl"
+                            onClick={() => handleCloseModal()}
+                            className="absolute top-3 right-5 text-gray-600 text-xl"
                         >
                             ✕
                         </button>

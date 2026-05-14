@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () =>{
+const Navbar = () => {
 
   const  navigate = useNavigate();
     return(
@@ -10,7 +10,7 @@ const Navbar = () =>{
       </h1>
 
       <div className="flex gap-4">
-        <button  className="px-6 py-1 border border-white text-white rounded-lg hover:bg-white hover:text-black transition">
+        <button onClick={()=> navigate("/admin/login")} className="px-6 py-1 border border-white text-white rounded-lg hover:bg-white hover:text-black transition">
          
           Admin
           
