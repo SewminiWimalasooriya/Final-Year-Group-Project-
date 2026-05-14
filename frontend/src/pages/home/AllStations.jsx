@@ -80,7 +80,7 @@ const AllStations = () => {
                     Available EV Stations
                 </h1>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pb-20">
                     {stations.map((station) => (
                         <div key={station.id} className="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
 
