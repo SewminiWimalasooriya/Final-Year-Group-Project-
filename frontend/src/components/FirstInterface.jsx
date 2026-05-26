@@ -47,6 +47,8 @@ const FirstInterface = () => {
             sendData.append("email", formData.email);
             sendData.append("address", formData.address);
             sendData.append("phone", formData.phoneNo);
+            sendData.append("location[lat]", formData.lat);
+            sendData.append("location[lng]", formData.lng);
 
             // image
             sendData.append("image", image);
@@ -69,6 +71,8 @@ const FirstInterface = () => {
                     email: "",
                     address: "",
                     phoneNo: "",
+                    lat: "",
+                    lng: "",
                 })
                 setImage(null);
                 if (fileInputRef.current) {
@@ -93,6 +97,8 @@ const FirstInterface = () => {
             email: "",
             address: "",
             phoneNo: "",
+            lat: "",
+            lng: "",
         });
 
         setImage(null);
@@ -149,6 +155,13 @@ const FirstInterface = () => {
                     </button>
 
                     <button
+                        onClick={() => navigate("/stations-map")}
+                        className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition"
+                    >
+                        Find Nearest Station
+                    </button>
+
+                    <button
                         onClick={() => setOpenModal(true)}
                         className="px-6 py-3 border border-white text-white rounded-lg hover:bg-white hover:text-black transition"
                     >
@@ -174,14 +187,14 @@ const FirstInterface = () => {
                             ✕
                         </button>
 
-                        <h2 className="text-2xl font-bold mb-6 text-center">
+                        <h2 className="text-2xl font-bold mb-4 text-center">
                             Apartment Request
                         </h2>
 
                         {/* Form */}
                         <form
                             onSubmit={handleSubmit}
-                            className="flex flex-col gap-4"
+                            className="flex flex-col gap-2"
                         >
 
                             <input
@@ -190,7 +203,7 @@ const FirstInterface = () => {
                                 placeholder="Apartment Name"
                                 value={formData.apartmentName}
                                 onChange={handleChange}
-                                className="border p-3 rounded-lg outline-none"
+                                className="border p-2 rounded-lg outline-none"
                                 required
                             />
 
@@ -200,7 +213,7 @@ const FirstInterface = () => {
                                 placeholder="Owner Name"
                                 value={formData.ownerName}
                                 onChange={handleChange}
-                                className="border p-3 rounded-lg outline-none"
+                                className="border p-2 rounded-lg outline-none"
                                 required
                             />
 
@@ -210,7 +223,7 @@ const FirstInterface = () => {
                                 placeholder="Email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="border p-3 rounded-lg outline-none"
+                                className="border p-2 rounded-lg outline-none"
                                 required
                             />
 
@@ -219,7 +232,27 @@ const FirstInterface = () => {
                                 placeholder="Address"
                                 value={formData.address}
                                 onChange={handleChange}
-                                className="border p-3 rounded-lg outline-none"
+                                className="border p-2 rounded-lg outline-none"
+                                rows="2"
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="lat"
+                                placeholder="Latitude"
+                                value={formData.lat}
+                                onChange={handleChange}
+                                className="border p-2 rounded-lg outline-none"
+                                rows="3"
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="lng"
+                                placeholder="Longitude"
+                                value={formData.lng}
+                                onChange={handleChange}
+                                className="border p-2 rounded-lg outline-none"
                                 rows="3"
                                 required
                             />
@@ -229,7 +262,7 @@ const FirstInterface = () => {
                                 placeholder="Phone Number"
                                 value={formData.phoneNo}
                                 onChange={handleChange}
-                                className="border p-3 rounded-lg outline-none"
+                                className="border p-2 rounded-lg outline-none"
                                 required
                             />
                             <input
@@ -237,12 +270,12 @@ const FirstInterface = () => {
                                 accept="image/*"
                                 ref={fileInputRef}
                                 onChange={(e) => setImage(e.target.files[0])}
-                                className="border p-3 rounded-lg outline-none"
+                                className="border p-2 rounded-lg outline-none"
                             />
 
                             <button
                                 type="submit"
-                                className="bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition"
+                                className="bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
 
                             >
                                 Send Request

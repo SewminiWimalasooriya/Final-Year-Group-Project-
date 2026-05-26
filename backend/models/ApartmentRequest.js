@@ -6,6 +6,10 @@ const apartmentRequestSchema = new mongoose.Schema({
   ownerName: String,
   email: String,
   phone: String,
+  location: {
+      lat: Number,
+      lng: Number,
+   },
 
   status: {
     type: String,

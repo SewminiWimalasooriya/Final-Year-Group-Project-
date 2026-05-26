@@ -5,6 +5,7 @@ import crypto from "crypto";
 import User from "../models/User.js";
 import fs from "fs";
 
+//create station request form 
 export const createApartmentRequest = async (req, res) => {
     try {
         const { name, email } = req.body;
@@ -41,11 +42,12 @@ export const createApartmentRequest = async (req, res) => {
                 message: "Apartment already exists",
             });
         }
+        
 
 
         // 3. Upload image
         const image = req.file
-            ? req.file.path
+            ? `http://localhost:5000/${req.file.path.replace(/\\/g, "/")}`
             : null;
 
         // 4. Create request
@@ -101,7 +103,8 @@ export const approveRequest = async (req, res) => {
             email: request.email,
             phone: request.phone,
             image: request.image,
-            status: "approved"
+            status: "approved",
+            location: request.location,
         });
 
         // 2️⃣ generate temp password

@@ -5,6 +5,10 @@ const apartmentSchema = new mongoose.Schema({
   address: String,
   ownerName: String,
   email: String,
+  location: {
+      lat: Number,
+      lng: Number,
+   },
   image: {
         type: String
     },
