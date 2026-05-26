@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js"; 
+import User from "./models/User.js";
+import authRoutes from "./routes/authRoutes.js";
+import apartmentRequestRoutes from "./routes/apartmentRequestRoutes.js";
+import adminAuthRoutes from './routes/adminAuthRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +23,15 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("API running...");
 });
+
+app.use("/uploads", express.static("uploads"));
+
+//routes
+app.use('/api/auth',authRoutes);
+app.use('/api/apartment', apartmentRequestRoutes);
+
+//admin routes
+app.use('/api/auth/admin',adminAuthRoutes);
 
 
 // start server
